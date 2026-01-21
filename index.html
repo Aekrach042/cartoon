@@ -12,6 +12,14 @@
 <body>
   <div class="toolbar">Episode 1 · Tap to toggle</div>
   <main class="viewer" id="viewer"></main>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+
+<div class="viewer">
+  <div id="book-container">
+    </div>
+</div>
+  
   <script>
     const manifest = [
       { src: 'cover.webp', w: 1080, h: 1600 },
@@ -57,6 +65,8 @@
       { src: 'back.webp', w: 1080, h: 1400 },
       // ...
     ];
+
+    
     const container = document.getElementById('viewer');
     manifest.forEach(item => {
       const img = document.createElement('img');
