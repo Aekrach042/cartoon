@@ -87,29 +87,4 @@
 </body>
 </html>
 
-    manifest.forEach((item, index) => {
-      const page = document.createElement('div');
-      page.className = 'page';
-      page.style.zIndex = manifest.length - index; // จัดลำดับหน้า
 
-      const img = document.createElement('img');
-      img.src = item.src;
-      img.alt = `Page ${index + 1}`;
-      
-      page.appendChild(img);
-      book.appendChild(page);
-
-      // คลิกเพื่อเปิด/ปิด
-      page.addEventListener('click', function() {
-        if (this.classList.contains('flipped')) {
-          this.classList.remove('flipped');
-          this.style.zIndex = manifest.length - index;
-        } else {
-          this.classList.add('flipped');
-          this.style.zIndex = index + 1;
-        }
-      });
-    });
-  </script>
-</body>
-</html>
