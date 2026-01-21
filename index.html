@@ -3,87 +3,95 @@
 <head>
   <meta charset="utf-8">
   <style>
-    body { margin: 0; background: #111; color: #fff; }
-    .viewer { max-width: 1080px; margin: 0 auto; }
-    img { width: 100%; display: block; background: #222; }
-    .toolbar { position: fixed; top: 0; left: 0; right: 0; padding: 8px 12px; background: rgba(0,0,0,0.5); }
+    body { 
+      margin: 0; 
+      background: #111; 
+      color: #fff; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh;
+      overflow: hidden;
+    }
+    .book-container {
+      width: 540px; /* ความกว้างต่อหนึ่งหน้า */
+      height: 800px;
+      perspective: 1500px;
+      position: relative;
+    }
+    .page {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+      user-select: none;
+    }
+    .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      backface-visibility: hidden;
+      border-radius: 0 4px 4px 0;
+      box-shadow: inset -50px 0 50px rgba(0,0,0,0.5);
+    }
+    /* เมื่อเปิดหน้าไปแล้ว */
+    .page.flipped {
+      transform: rotateY(-180deg);
+    }
+    .toolbar { 
+      position: fixed; top: 0; left: 0; right: 0; 
+      padding: 8px 12px; background: rgba(0,0,0,0.5); 
+      z-index: 100; text-align: center;
+    }
+    .instructions {
+      position: fixed; bottom: 20px; color: #888; font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
-  <div class="toolbar">Episode 1 · Tap to toggle</div>
-  <main class="viewer" id="viewer"></main>
+  <div class="toolbar">Episode 1 · คลิกที่หน้าเพื่อเปิด</div>
+  <div class="book-container" id="book">
+    </div>
+  <div class="instructions">คลิกเพื่อเปิดหน้าถัดไป / คลิกหน้าที่เปิดแล้วเพื่อถอยหลัง</div>
+
   <script>
     const manifest = [
-      { src: 'cover.webp', w: 1080, h: 1600 },
-      { src: '1-1.webp', w: 1080, h: 1600 },
-      { src: '1-2.webp', w: 1080, h: 1400 },
-      { src: '1-3.webp', w: 1080, h: 1400 },
-      { src: '2-1.webp', w: 1080, h: 1400 },
-      { src: '2-2.webp', w: 1080, h: 1400 },
-      { src: '2-3.webp', w: 1080, h: 1400 },
-      { src: '2-4.webp', w: 1080, h: 1400 },
-      { src: '3-1.webp', w: 1080, h: 1400 },
-      { src: '3-2.webp', w: 1080, h: 1400 },
-      { src: '3-3.webp', w: 1080, h: 1400 },
-      { src: '3-4.webp', w: 1080, h: 1400 },
-      { src: '3-5.webp', w: 1080, h: 1400 },
-      { src: '3-6.webp', w: 1080, h: 1400 },
-      { src: '3-7.webp', w: 1080, h: 1400 },
-      { src: '3-8.webp', w: 1080, h: 1400 },
-      { src: '5-1.webp', w: 1080, h: 1400 },
-      { src: '5-2.webp', w: 1080, h: 1400 },
-      { src: '5-3.webp', w: 1080, h: 1400 },
-      { src: '4-1.webp', w: 1080, h: 1400 },
-      { src: '4-2.webp', w: 1080, h: 1400 },
-      { src: '4-3.webp', w: 1080, h: 1400 },
-      { src: '4-4.webp', w: 1080, h: 1400 },
-      { src: '4-5.webp', w: 1080, h: 1400 },
-      { src: '4-6.webp', w: 1080, h: 1400 },
-      { src: '4-7.webp', w: 1080, h: 1400 },
-      { src: '6-1.webp', w: 1080, h: 1400 },
-      { src: '6-2.webp', w: 1080, h: 1400 },
-      { src: '6-3.webp', w: 1080, h: 1400 },
-      { src: '6-4.webp', w: 1080, h: 1400 },
-      { src: '6-5.webp', w: 1080, h: 1400 },
-      { src: '6-6.webp', w: 1080, h: 1400 },
-      { src: '6-7.webp', w: 1080, h: 1400 },
-      { src: '7-1.webp', w: 1080, h: 1400 },
-      { src: '7-2.webp', w: 1080, h: 1400 },
-      { src: '7-3.webp', w: 1080, h: 1400 },
-      { src: '7-4.webp', w: 1080, h: 1400 },
-      { src: '7-5.webp', w: 1080, h: 1400 },
-      { src: '7-6.webp', w: 1080, h: 1400 },
-      { src: '7-7.webp', w: 1080, h: 1400 },
-      { src: 'back.webp', w: 1080, h: 1400 },
-      // ...
+      { src: 'cover.webp' }, { src: '1-1.webp' }, { src: '1-2.webp' },
+      { src: '1-3.webp' }, { src: '2-1.webp' }, { src: '2-2.webp' },
+      // ... เพิ่มรายการไฟล์ของคุณที่นี่
     ];
-    const container = document.getElementById('viewer');
-    manifest.forEach(item => {
+
+    const book = document.getElementById('book');
+
+    // สร้างหน้าหนังสือ
+    manifest.forEach((item, index) => {
+      const page = document.createElement('div');
+      page.className = 'page';
+      page.style.zIndex = manifest.length - index; // จัดลำดับหน้า
+
       const img = document.createElement('img');
       img.src = item.src;
-      img.loading = 'lazy';
-      img.alt = '';
-      container.appendChild(img);
-    });
-        // Prefetch ภาพถัดไปเล็กน้อย
-    const prefetchCount = 3;
-    let lastVisibleIndex = 0;
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const idx = Array.from(container.children).indexOf(e.target);
-          if (idx > lastVisibleIndex) {
-            lastVisibleIndex = idx;
-            for (let i = 1; i <= prefetchCount; i++) {
-              const next = manifest[idx + i];
-              if (next) new Image().src = next.src;
-            }
-          }
+      img.alt = `Page ${index + 1}`;
+      
+      page.appendChild(img);
+      book.appendChild(page);
+
+      // คลิกเพื่อเปิด/ปิด
+      page.addEventListener('click', function() {
+        if (this.classList.contains('flipped')) {
+          this.classList.remove('flipped');
+          this.style.zIndex = manifest.length - index;
+        } else {
+          this.classList.add('flipped');
+          this.style.zIndex = index + 1;
         }
       });
-    }, { rootMargin: '200px' });
-    container.querySelectorAll('img').forEach(img => io.observe(img));
+    });
   </script>
 </body>
 </html>
-    
