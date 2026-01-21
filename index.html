@@ -12,14 +12,6 @@
 <body>
   <div class="toolbar">Episode 1 · Tap to toggle</div>
   <main class="viewer" id="viewer"></main>
-
-<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
-
-<div class="viewer">
-  <div id="book-container">
-    </div>
-</div>
-  
   <script>
     const manifest = [
       { src: 'cover.webp', w: 1080, h: 1600 },
@@ -93,36 +85,6 @@
       });
     }, { rootMargin: '200px' });
     container.querySelectorAll('img').forEach(img => io.observe(img));
-
-    
-            const manifest = [ /* ข้อมูลภาพของคุณ */ ];
-
-const container = document.getElementById('book-container');
-
-// 1. สร้าง HTML Element สำหรับแต่ละหน้า
-manifest.forEach(item => {
-  const page = document.createElement('div');
-  page.className = 'page';
-  page.innerHTML = `<img src="${item.src}" style="width:100%; height:100%; object-fit: contain;">`;
-  container.appendChild(page);
-});
-
-// 2. เรียกใช้การทำงาน Flipbook
-const pageFlip = new St.PageFlip(container, {
-    width: 1080, // ขนาดหน้า
-    height: 1400,
-    size: "stretch",
-    minWidth: 315,
-    maxWidth: 1000,
-    minHeight: 420,
-    maxHeight: 1350,
-    maxShadowOpacity: 0.5,
-    showCover: true,
-    mobileScrollSupport: false // ปิดการเลื่อนจอเพื่อให้พลิกกระดาษได้ถนัด
-});
-
-pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-
   </script>
 </body>
 </html>
