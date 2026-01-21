@@ -14,10 +14,13 @@
       overflow: hidden;
     }
     .book-container {
-      width: 1800px; /* ความกว้างต่อหนึ่งหน้า */
-      height: 2100px;
-      perspective: 2500px;
-      position: relative;
+     width: min(90vw, 75vh);  
+     aspect-ratio: 1800 / 2100; 
+     perspective: 2500px;
+     position: relative;
+     display: flex;
+     justify-content: center;
+     align-items: center;
     }
     .page {
       width: 100%;
