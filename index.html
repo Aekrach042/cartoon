@@ -35,14 +35,13 @@
       user-select: none;
     }
     .page img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      backface-visibility: hidden;
-      border-radius: 0 4px 4px 0;
-      box-shadow: inset -50px 0 50px rgba(0,0,0,0.5);
+     width: 100%;
+     height: 100%;
+     object-fit: contain; 
+     backface-visibility: hidden;
+     border-radius: 0 4px 4px 0;
+     box-shadow: -5px 0 15px rgba(0,0,0,0.3); 
     }
-    /* เมื่อเปิดหน้าไปแล้ว */
     .page.flipped {
       transform: rotateY(-180deg);
     }
@@ -105,12 +104,10 @@
       { src: '7-6.webp' },
       { src: '7-7.webp' },
       { src: 'back.webp' },
-      // ... เพิ่มรายการไฟล์ของคุณที่นี่
     ];
 
     const book = document.getElementById('book');
 
-    // สร้างหน้าหนังสือ
     manifest.forEach((item, index) => {
       const page = document.createElement('div');
       page.className = 'page';
@@ -123,7 +120,6 @@
       page.appendChild(img);
       book.appendChild(page);
 
-      // คลิกเพื่อเปิด/ปิด
       page.addEventListener('click', function() {
         if (this.classList.contains('flipped')) {
           this.classList.remove('flipped');
